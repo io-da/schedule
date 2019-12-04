@@ -2,8 +2,8 @@
 A schedule utility to generate all the dates.  
 
 [![Build Status](https://travis-ci.org/io-da/schedule.svg?branch=master)](https://travis-ci.org/io-da/schedule)
-[![Maintainability](https://api.codeclimate.com/v1/badges/320d3b5a036178276900/maintainability)](https://codeclimate.com/github/io-da/schedule/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/320d3b5a036178276900/test_coverage)](https://codeclimate.com/github/io-da/schedule/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/3bf3737ea61c79b5d74a/maintainability)](https://codeclimate.com/github/io-da/schedule/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/3bf3737ea61c79b5d74a/test_coverage)](https://codeclimate.com/github/io-da/schedule/test_coverage)
 [![GoDoc](https://godoc.org/github.com/io-da/schedule?status.svg)](https://godoc.org/github.com/io-da/schedule)
 
 ## Installation
