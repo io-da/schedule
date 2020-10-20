@@ -486,11 +486,24 @@ func TestIn(t *testing.T) {
 	}
 }
 
+func TestAs(t *testing.T) {
+	sch := As(Cron().EveryDay())
+	expectedAt := time.Now().Add(time.Hour * 24)
+	expectedAt = date().overwrite(expectedAt).setHour(0).setMinute(0).setSecond(0).setMillisecond(0).Time
+	if sch.advanceX(t, 1) != expectedAt {
+		t.Error("Unexpected Schedule behavior.")
+	}
+	expectedAt = expectedAt.Add(time.Hour * 24 * 3)
+	if sch.advanceX(t, 3) != expectedAt {
+		t.Error("Unexpected Schedule behavior.")
+	}
+}
+
 func TestSchedule_Next(t *testing.T) {
 	dt1 := date().Time
 	dt2 := date().setYear(2020).setMonth(2).setDay(28).Time
 	sch := At(dt1, dt2)
-	sch.Cron(Cron().EveryDay())
+	sch.AddCron(Cron().EveryDay())
 	if !sch.Following().IsZero() {
 		t.Error("Unexpected Schedule date returned.")
 	}
@@ -512,7 +525,7 @@ func TestSchedule_Next(t *testing.T) {
 	}
 
 	sch = In(time.Hour, time.Hour*6)
-	sch.Cron(Cron().EveryHour())
+	sch.AddCron(Cron().EveryHour())
 	expectedAt = time.Now().Add(time.Hour)
 	if toMilliseconds(sch.advanceX(t, 1)) != toMilliseconds(expectedAt) {
 		t.Error("Unexpected Schedule date returned.")
@@ -527,8 +540,8 @@ func TestSchedule_Next(t *testing.T) {
 	if toMilliseconds(sch.advanceX(t, 1)) != toMilliseconds(expectedAt) {
 		t.Error("Unexpected Schedule date returned.")
 	}
-	expectedAt = expectedAt.Add(time.Hour * 1337)
-	if toMilliseconds(sch.advanceX(t, 1337)) != toMilliseconds(expectedAt) {
+	expectedAt = expectedAt.Add(time.Hour * 24)
+	if toMilliseconds(sch.advanceX(t, 24)) != toMilliseconds(expectedAt) {
 		t.Error("Unexpected Schedule date returned.")
 	}
 

@@ -57,12 +57,23 @@ func In(in ...time.Duration) *Schedule {
 	return sch
 }
 
-// Cron is used to setup a CronExpression that starts operating after the scheduled times pass.
-// Example: In(time.Hour * 24 * 7).Cron(Cron().EveryDay()):
+// As creates a new schedule that produces dates based on the provided CronExpression.
+// Example: As(Cron().EveryDay()):
+// 		date = 00:00:00 of the following day;
+// 		...
+func As(crn *CronExpression) *Schedule {
+	return &Schedule{
+		crn:            crn,
+		crnI:           crn.NewInstance(time.Now()),
+	}
+}
+
+// AddCron is used to setup a CronExpression that starts operating after the scheduled times pass.
+// Example: In(time.Hour * 24 * 7).AddCron(Cron().EveryDay()):
 // 		date = time.Now().Add(time.Hour * 24 * 7);
 //		date = 00:00:00 of the following day;
 //		...
-func (sch *Schedule) Cron(crn *CronExpression) {
+func (sch *Schedule) AddCron(crn *CronExpression) {
 	sch.crn = crn
 }
 
@@ -77,8 +88,8 @@ func (sch *Schedule) Next() error {
 	}
 	if sch.crnI == nil {
 		sch.crnI = sch.crn.NewInstance(sch.at[sch.followingIndex])
+		sch.followingIndex++
 	}
-	sch.followingIndex++
 	return sch.crnI.Next()
 }
 
