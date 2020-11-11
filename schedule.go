@@ -62,9 +62,13 @@ func In(in ...time.Duration) *Schedule {
 // 		date = 00:00:00 of the following day;
 // 		...
 func As(crn *CronExpression) *Schedule {
+	crnI := crn.NewInstance(time.Now())
+	if err := crnI.Next(); err != nil {
+		panic("schedule: invalid CronExpression provided")
+	}
 	return &Schedule{
-		crn:            crn,
-		crnI:           crn.NewInstance(time.Now()),
+		crn:  crn,
+		crnI: crnI,
 	}
 }
 
