@@ -490,13 +490,19 @@ func TestAs(t *testing.T) {
 	sch := As(Cron().EveryDay())
 	expectedAt := time.Now().Add(time.Hour * 24)
 	expectedAt = date().overwrite(expectedAt).setHour(0).setMinute(0).setSecond(0).setMillisecond(0).Time
-	if sch.advanceX(t, 1) != expectedAt {
+	if sch.Following() != expectedAt {
 		t.Error("Unexpected Schedule behavior.")
 	}
 	expectedAt = expectedAt.Add(time.Hour * 24 * 3)
 	if sch.advanceX(t, 3) != expectedAt {
 		t.Error("Unexpected Schedule behavior.")
 	}
+
+}
+
+func TestAsPanic(t *testing.T) {
+	defer ensurePanic(t, "schedule: invalid CronExpression provided")
+	As(Cron().EveryDay().OnYears(time.Now().Year() - 1))
 }
 
 func TestSchedule_Next(t *testing.T) {
@@ -644,6 +650,6 @@ func toMilliseconds(t time.Time) int64 {
 
 func ensurePanic(t *testing.T, p string) {
 	if r := recover(); r != p {
-		t.Errorf("Expected panic: %s", p)
+		t.Errorf("Expected panic: \"%s\", Recovered panic: \"%s\"", p, r)
 	}
 }
